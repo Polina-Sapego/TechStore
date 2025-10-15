@@ -1,0 +1,30 @@
+@mixin flex-center
+  display: flex
+  align-items: center
+
+@mixin button-base
+  padding: 8px 20px
+  border-radius: 6px
+  font-size: 15px
+  cursor: pointer
+  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease
+
+@mixin button-green-base($bg, $text-color: white)
+  display: block
+  margin: 0 auto
+  background-color: $bg
+  color: $text-color
+  padding: 10px 24px
+  border: none
+  border-radius: 6px
+  font-size: 15px
+  font-weight: 500
+  cursor: pointer
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease
+
+  &:hover
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15)
+
+  &:active
+    transform: scale(0.97)
