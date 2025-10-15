@@ -1,0 +1,17 @@
+@import "../../mixins"
+
+$font-size-name-medium: 1.6rem
+$color-gray: #ccc
+$color-yellow: #f5b301
+
+.star-rating
+  display: flex
+  justify-content: center
+  gap: 4px
+  font-size: $font-size-name-medium
+
+  .star
+    color: $color-gray
+
+    &.filled
+      color: $color-yellow
