@@ -1,5 +1,5 @@
-@import "../../mixins"
-@import "../common"
+@use "../../mixins" as mixins
+@use "../common" as common
 
 $color-border: rgba(42, 104, 45, 0.82)
 $color-brown: #957F55
@@ -8,13 +8,13 @@ $color-brown: #957F55
   margin-bottom: 10vh
 
   .main-header
-    @include flex-center
+    @include mixins.flex-center
     justify-content: space-between
     padding: 20px 40px
     background-color: rgba($color-brown, 0.24)
 
     .logo-tech-store
-      @include flex-center
+      @include mixins.flex-center
       gap: 10px
 
       .logo-tech-store-img
@@ -30,17 +30,17 @@ $color-brown: #957F55
       gap: 10px
 
       .auth-button
-        @include button-base
+        @include mixins.button-base
         background-color: transparent
-        color: $color-green
-        border: 2px solid $color-green
+        color: common.$color-green
+        border: 2px solid common.$color-green
 
         &:hover
-          background-color: rgba($color-green, 0.1)
-          color: $color-green-hover
+          background-color: rgba(common.$color-green, 0.1)
+          color: common.$color-green-hover
 
         &:active
-          background-color: rgba($color-green, 0.2)
+          background-color: rgba(common.$color-green, 0.2)
           transform: scale(0.97)
 
   .tech-store-category-buttons
@@ -74,10 +74,10 @@ $color-brown: #957F55
         transition: color 0.3s ease
 
       &.active
-        box-shadow: 0 0 10px rgba($color-green-active, 0.2)
+        box-shadow: 0 0 10px rgba(common.$color-green-active, 0.2)
 
         .category-name
-          color: $color-green
+          color: common.$color-green
 
         &:hover .category-img
           transform: scale(1.1)
@@ -108,7 +108,7 @@ $color-brown: #957F55
         transition: 0.2s
 
         &:hover
-          border-color: rgba($color-green-active, 0.82)
+          border-color: rgba(common.$color-green-active, 0.82)
 
     .product-grid
       display: grid
