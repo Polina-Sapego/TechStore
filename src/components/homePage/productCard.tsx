@@ -20,9 +20,9 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
         <img src={product.image} alt={product.title} className="card-image"/>
       </div>
       <div className="card-content">
-        <h3 className="card-name">{product.title}</h3>
+        <h3 className="card-name" data-testid="product-title">{product.title}</h3>
         <StarRating rating={product.rating}/>
-        <p className="card-price">${product.price}</p>
+        <p className="card-price" data-testid="product-price">${product.price}</p>
         <button className="card-button">Add to cart</button>
       </div>
     </div>
