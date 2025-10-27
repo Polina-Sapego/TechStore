@@ -1,12 +1,14 @@
 import React from 'react';
 import StarRating from './starRating.tsx';
 
-type Product = {
+export type Product = {
   id: number;
   title: string;
   price: number;
   rating: number;
   image?: string;
+  category: string;
+  inStock: boolean;
 };
 
 type ProductCardProps = {

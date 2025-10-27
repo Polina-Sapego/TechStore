@@ -1,39 +1,43 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import ProductCard from './productCard.tsx';
-import { products } from './productsMoc.ts';
+import React, { useEffect, useState } from 'react';
+import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
+import ProductCard, { type Product } from './productCard.tsx';
 import Logo from '../../../images/logo.png';
 import AllProduct from '../../../images/allProduct.png';
 import HeadPhones from '../../../images/headPhone.png';
 import Phones from '../../../images/phone.png';
 import Laptops from '../../../images/laptop.png';
+import { fetchProducts } from '../../api/products.ts';
+
+const categories = [
+  { id: 'all', label: 'All', img: AllProduct },
+  { id: 'phones', label: 'Phones', img: Phones },
+  { id: 'laptops', label: 'Laptops', img: Laptops },
+  { id: 'accessories', label: 'Accessories', img: HeadPhones },
+];
 
 const HomePage: React.FC = () => {
   const [active, setActive] = useState('all');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(
-    (sessionStorage.getItem('sortOrder') as 'asc' | 'desc' | null) || null
+    (sessionStorage.getItem('sortOrder') as 'asc' | 'desc' | null) || null,
   );
 
-  const categories = [
-    { id: 'all', label: 'All', img: AllProduct },
-    { id: 'phones', label: 'Phones', img: Phones },
-    { id: 'laptops', label: 'Laptops', img: Laptops },
-    { id: 'accessories', label: 'Accessories', img: HeadPhones },
-  ];
-
   useEffect(() => {
-    if (sortOrder) {
-      sessionStorage.setItem('sortOrder', sortOrder);
-    } else {
-      sessionStorage.removeItem('sortOrder');
-    }
+    if (sortOrder) sessionStorage.setItem('sortOrder', sortOrder);
+    else sessionStorage.removeItem('sortOrder');
   }, [sortOrder]);
 
-  const displayedProducts = useMemo(() => {
-    if (!sortOrder) return products;
-    return [...products].sort((a, b) =>
-      sortOrder === 'asc' ? a.price - b.price : b.price - a.price
-    );
-  }, [sortOrder]);
+  const { data, isLoading, isError } = useQuery(
+    {
+      queryKey: ['products', active, sortOrder],
+      queryFn: () => fetchProducts(active, sortOrder),
+      keepPreviousData: true,
+    } as UseQueryOptions<Product[], Error, Product[], readonly unknown[]>,
+  );
+
+  const products: Product[] = data ?? [];
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Failed to load products</div>;
 
   return (
     <div className="home-page">
@@ -82,7 +86,7 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="product-grid">
-          {displayedProducts.map((product) => (
+          {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
