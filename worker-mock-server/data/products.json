@@ -1,0 +1,166 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Minimalist ANC Headphones",
+      "price": 109,
+      "rating": 4,
+      "image": "/images/Headphones.jpg",
+      "category": "accessories",
+      "inStock": true
+    },
+    {
+      "id": 2,
+      "title": "Laptop MacBook Air M2",
+      "price": 119999,
+      "rating": 4.8,
+      "image": "/images/laptop.jpg",
+      "category": "laptops",
+      "inStock": true
+    },
+    {
+      "id": 3,
+      "title": "Беспроводные наушники Sony WH-1000XM5",
+      "price": 299,
+      "rating": 5,
+      "image": "/images/Sony-WH-1000XM5.webp",
+      "category": "accessories",
+      "inStock": true
+    },
+    {
+      "id": 4,
+      "title": "Умные часы Apple Watch Series 9",
+      "price": 49990,
+      "rating": 3,
+      "image": "/images/AppleWatchSeries9.webp",
+      "category": "accessories",
+      "inStock": false
+    },
+    {
+      "id": 5,
+      "title": "Игровая консоль Sony PlayStation 5",
+      "price": 59990,
+      "rating": 4,
+      "image": "/images/SonyPlayStation5.webp",
+      "category": "accessories",
+      "inStock": true
+    },
+    {
+      "id": 6,
+      "title": "Фитнес-браслет Xiaomi Mi Band 8",
+      "price": 3990,
+      "rating": 3,
+      "image": "/images/XiaomiMiBand8.webp",
+      "category": "accessories",
+      "inStock": false
+    },
+    {
+      "id": 7,
+      "title": "Планшет Samsung Galaxy Tab S9",
+      "price": 79990,
+      "rating": 5,
+      "image": "/images/SamsungGalaxyTabS9.webp",
+      "category": "laptops",
+      "inStock": true
+    },
+    {
+      "id": 8,
+      "title": "Беспроводная колонка JBL Charge 5",
+      "price": 12990,
+      "rating": 3,
+      "image": "/images/JBLCharge5.webp",
+      "category": "accessories",
+      "inStock": false
+    },
+    {
+      "id": 9,
+      "title": "Фотоаппарат Sony Alpha A6400",
+      "price": 89990,
+      "rating": 4,
+      "image": "/images/SonyAlphaA6400.webp",
+      "category": "accessories",
+      "inStock": true
+    },
+    {
+      "id": 10,
+      "title": "Электронная книга Amazon Kindle Paperwhite",
+      "price": 15990,
+      "rating": 5,
+      "image": "/images/AmazonKindlePaperwhite.webp",
+      "category": "accessories",
+      "inStock": false
+    },
+    {
+      "id": 11,
+      "title": "Игровой ноутбук ASUS ROG Zephyrus G14",
+      "price": 149990,
+      "rating": 3,
+      "image": "/images/ASUSROGZephyrusG14.webp",
+      "category": "laptops",
+      "inStock": false
+    },
+    {
+      "id": 12,
+      "title": "Умная колонка Яндекс Станция Мини",
+      "price": 5990,
+      "rating": 2,
+      "image": "/images/ЯндексСтанцияМини.webp",
+      "category": "accessories",
+      "inStock": false
+    },
+    {
+      "id": 16,
+      "title": "Клавиатура Razer BlackWidow V3",
+      "price": 12990,
+      "rating": 4,
+      "image": "/images/RazerBlackWidowV3.webp",
+      "category": "accessories",
+      "inStock": false
+    },
+    {
+      "id": 17,
+      "title": "Мышь Logitech G Pro X Superlight",
+      "price": 9990,
+      "rating": 5,
+      "image": "/images/LogitechGProXSuperlight.webp",
+      "category": "accessories",
+      "inStock": true
+    },
+    {
+      "id": 18,
+      "title": "Наушники AirPods Pro 2",
+      "price": 24990,
+      "rating": 3,
+      "image": "/images/AirPodsPro2.webp",
+      "category": "accessories",
+      "inStock": false
+    },
+    {
+      "id": 20,
+      "title": "Смарт-часы Huawei Watch GT 4",
+      "price": 11990,
+      "rating": 5,
+      "image": "/images/HuaweiWatchGT4.webp",
+      "category": "accessories",
+      "inStock": true
+    },
+    {
+      "id": 21,
+      "title": "Смартфон Apple iPhone 17",
+      "price": 10990,
+      "rating": 5,
+      "image": "/images/AppleiPhone17.webp",
+      "category": "phones",
+      "inStock": true
+    },
+    {
+      "id": 22,
+      "title": "Samsung Galaxy A56 5G",
+      "price": 10990,
+      "rating": 5,
+      "image": "/images/SamsungGalaxyA56.webp",
+      "category": "phones",
+      "inStock": true
+    }
+  ]
+}
