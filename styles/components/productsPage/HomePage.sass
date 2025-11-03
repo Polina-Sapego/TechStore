@@ -10,7 +10,7 @@ $color-brown: #957F55
   .main-header
     @include mixins.flex-center
     justify-content: space-between
-    padding: 20px 40px
+    padding: 1% 1%
     background-color: rgba($color-brown, 0.24)
 
     .logo-tech-store
@@ -22,18 +22,30 @@ $color-brown: #957F55
         height: 40px
 
       .tech-store-title
-        font-size: 24px
+        font-size: 1.5rem
         font-weight: 600
+
+        @media (max-width: 580px)
+          font-size: 1.2rem
+
+        @media (max-width: 400px)
+          font-size: 1rem
 
     .logo-register-buttons
       display: flex
       gap: 10px
+      align-items: center
+      overflow: visible
 
       .auth-button
         @include mixins.button-base
         background-color: transparent
         color: common.$color-green
         border: 2px solid common.$color-green
+        flex: 0 0 auto
+        display: flex
+        justify-content: center
+        align-items: center
 
         &:hover
           background-color: rgba(common.$color-green, 0.1)
@@ -42,6 +54,39 @@ $color-brown: #957F55
         &:active
           background-color: rgba(common.$color-green, 0.2)
           transform: scale(0.97)
+
+        @media (max-width: 580px)
+          width: 72px
+          height: 40px
+          font-size: 0.7rem
+
+        @media (max-width: 400px)
+          width: 62px
+          height: 30px
+          font-size: 0.6rem
+
+      .cart-icon
+        display: block
+        width: 85px
+        height: 85px
+        cursor: pointer
+        transition: transform 0.15s ease, filter 0.15s ease
+        transform-origin: center
+        flex: 0 0 auto
+        user-select: none
+
+        @media (max-width: 580px)
+          width: 72px
+          height: 72px
+
+        @media (max-width: 400px)
+          width: 62px
+          height: 62px
+
+      .cart-icon:hover,
+      .cart-icon:focus
+        transform: scale(1.12)
+        z-index: 2
 
   .tech-store-category-buttons
     display: flex
@@ -56,10 +101,11 @@ $color-brown: #957F55
       background: none
       border: none
       cursor: pointer
-      padding: 10px
+      padding: 1%
       border-radius: 10px
       transition: all 0.3s ease
       min-width: 80px
+      align-items: center
 
       .category-img
         width: 125px
@@ -67,11 +113,23 @@ $color-brown: #957F55
         object-fit: contain
         transition: transform 0.2s ease
 
+        @media (max-width: 570px)
+          width: 80px
+
+        @media (max-width: 490px)
+          width: 70px
+
+        @media (max-width: 490px)
+          width: 60px
+
       .category-name
-        font-size: 14px
+        font-size: 1rem
         font-weight: 500
-        color: #000
+        color: common.$color-black
         transition: color 0.3s ease
+
+        @media (max-width: 490px)
+          font-size: 0.7rem
 
       &.active
         box-shadow: 0 0 10px rgba(common.$color-green-active, 0.2)
@@ -85,7 +143,7 @@ $color-brown: #957F55
   .tech-store-grid-section
     max-width: 1200px
     margin: 0 auto
-    padding: 0 40px
+    padding: 0 4%
     display: flex
     flex-direction: column
     gap: 20px
@@ -101,9 +159,9 @@ $color-brown: #957F55
         margin-right: 12px
 
       .grid-select-sort
-        border: 1px solid #555
+        border: 1px solid common.$color-gray
         border-radius: 6px
-        padding: 6px 10px
+        padding: 0.4rem 0.6rem
         cursor: pointer
         transition: 0.2s
 
@@ -114,3 +172,7 @@ $color-brown: #957F55
       display: grid
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))
       gap: 24px
+
+      @media (max-width: 660px)
+          grid-template-columns: repeat(2, 1fr)
+          justify-items: center

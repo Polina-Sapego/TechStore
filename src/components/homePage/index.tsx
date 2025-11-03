@@ -7,6 +7,7 @@ import HeadPhones from '../../../images/headPhone.png';
 import Phones from '../../../images/phone.png';
 import Laptops from '../../../images/laptop.png';
 import { fetchProducts } from '../../api/products.ts';
+import CartButton from '../cart/CartButton.tsx';
 
 const categories = [
   { id: 'all', label: 'All', img: AllProduct },
@@ -49,6 +50,7 @@ const HomePage: React.FC = () => {
         <div className="logo-register-buttons">
           <button className="auth-button">Login</button>
           <button className="auth-button">Register</button>
+          <CartButton />
         </div>
       </header>
 
