@@ -37,7 +37,7 @@ export default function CartDrawer() {
       <div className="cart-box" onClick={close} data-testid="cart-overlay" />
       <aside
         className="cart-drawer"
-        role="dialog"
+        role="basket"
         aria-modal="true"
         aria-labelledby="cart-title"
         ref={drawerRef}
