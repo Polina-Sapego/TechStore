@@ -1,0 +1,92 @@
+@use "../../mixins" as mixins
+@use "../common" as common
+
+$color-black: #000
+$color-text-description: #555
+$color-dot-default: #ccc
+$color-dot-active: #333
+$font-size-name-large: 1.14rem
+$font-size-name-medium: 1.2rem
+$font-size-name-small: 0.65rem
+
+.product-card
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  height: 100%
+  background-color: common.$color-white
+  border-radius: 16px
+  box-shadow: 0 10px 20px rgba($color-black, 0.08)
+  transition: transform 0.3s ease, box-shadow 0.3s ease
+  overflow: visible
+  width: 100%
+  max-width: 300px
+  margin: 0 auto
+  user-select: none
+
+  &:hover
+    transform: translateY(-5px)
+    box-shadow: 0 15px 30px rgba($color-black, 0.15)
+
+  .card-image-box
+    height: 250px
+    display: flex
+    justify-content: center
+    align-items: center
+    overflow: hidden
+    border-radius: 12px
+    padding: 4%
+
+    .card-image
+      max-height: 90%
+      max-width: 90%
+      object-fit: contain
+      border-radius: 8px
+
+    &:hover
+      transform: scale(1.05)
+
+  @media (max-width: 650px)
+    .card-image-box
+      height: 200px
+
+  @media (max-width: 450px)
+    .card-image-box
+      height: 150px
+
+    .card-image
+      max-width: 90%
+
+  .card-content
+    padding: 4%
+    justify-content: space-between
+
+    .card-name
+      text-align: center
+      margin: 0 0 2%
+      font-size: $font-size-name-large
+
+    .card-price
+      text-align: center
+      margin: 0 0 2%
+      font-size: $font-size-name-medium
+
+      @media (max-width: 450px)
+        font-size: 1rem
+
+    @media (max-width: 650px)
+      .card-name
+        font-size: $font-size-name-medium
+
+    @media (max-width: 450px)
+      .card-name
+        font-size: $font-size-name-small
+
+    .card-button
+      @include mixins.button-green-base(common.$color-green)
+
+      &:hover
+        background-color: common.$color-green-hover
+
+      &:active
+        background-color: common.$color-green-active
