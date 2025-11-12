@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { useCartDrawer } from './useCartDrawer.tsx';
-import Basket from '../../../images/basket2.png';
-import { useCartStore } from '../../store/cart/store.ts';
+import { useCartDrawer } from './useCartDrawer';
+import Basket from '../../../assets/images/basket2.png';
+import { useCartStore } from '../../store/cart/store';
 
 export default function CartDrawer() {
   const { isOpen, close } = useCartDrawer();
@@ -75,7 +75,8 @@ export default function CartDrawer() {
                            </span>
                         </div>
                       </div>
-                      <button className="remove-btn" onClick={() => removeProduct(item.id)}>
+                      <button className="remove-btn" aria-label="Remove" title="Remove item"
+                              onClick={() => removeProduct(item.id)}>
                         ✕
                       </button>
                     </div>

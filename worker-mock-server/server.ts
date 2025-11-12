@@ -3,12 +3,17 @@ import express from 'express';
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
+import http from 'http';
+import { setupWebSocket } from './socket';
 
 const app = express();
-const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
+
+const server = http.createServer(app);
+
+setupWebSocket(server);
 
 const dataPath = path.join(__dirname, 'data', 'products.json');
 
@@ -55,6 +60,9 @@ app.get('/products/:id', (req: Request, res: Response) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+(async () => {
+  const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
+  server.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+})();

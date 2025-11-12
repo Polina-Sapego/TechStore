@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
 import ProductCard, { type Product } from './productCard.tsx';
-import Logo from '../../../images/logo.png';
-import AllProduct from '../../../images/allProduct.png';
-import HeadPhones from '../../../images/headPhone.png';
-import Phones from '../../../images/phone.png';
-import Laptops from '../../../images/laptop.png';
+import Logo from '../../../assets/images/logo.png';
+import AllProduct from '../../../assets/images/allProduct.png';
+import HeadPhones from '../../../assets/images/headPhone.png';
+import Phones from '../../../assets/images/phone.png';
+import Laptops from '../../../assets/images/laptop.png';
 import { fetchProducts } from '../../api/products.ts';
 import CartButton from '../cart/CartButton.tsx';
+import { useCartStore } from '../../store/cart/store.ts';
 
 const categories = [
   { id: 'all', label: 'All', img: AllProduct },
@@ -21,6 +22,12 @@ const HomePage: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(
     (sessionStorage.getItem('sortOrder') as 'asc' | 'desc' | null) || null,
   );
+  const connectWebSocket = useCartStore((s) => s.connectWebSocket);
+
+  useEffect(() => {
+    console.log('HomePage mounting — call connectWebSocket()');
+    connectWebSocket();
+  }, [connectWebSocket]);
 
   useEffect(() => {
     if (sortOrder) sessionStorage.setItem('sortOrder', sortOrder);

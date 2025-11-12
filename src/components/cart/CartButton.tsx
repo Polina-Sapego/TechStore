@@ -1,4 +1,4 @@
-import Basket from '../../../images/basket.png'
+import Basket from '../../../assets/images/basket.png';
 import { useCartDrawer } from './useCartDrawer.tsx';
 
 export default function CartButton() {

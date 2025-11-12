@@ -1,17 +1,24 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, afterEach, describe, expect, it, jest } from '@jest/globals';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { CartDrawerProvider } from '../cart/CartDrawerContext.tsx';
 import HomePage from '../homePage/index.tsx';
 import data from '../../../worker-mock-server/data/products.json';
 import '@testing-library/jest-dom';
 
-const renderWithClient = (ui: React.ReactElement) => {
+const renderWithProviders = (ui: React.ReactElement) => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   });
-  return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
+
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <CartDrawerProvider>
+        {ui}
+      </CartDrawerProvider>
+    </QueryClientProvider>,
+  );
 };
 
 beforeEach(() => {
@@ -28,8 +35,8 @@ afterEach(() => {
 });
 
 describe('HomePage sorting', () => {
-  it('renders products in default order initially', async () => {
-    renderWithClient(<HomePage />);
+  it('продукты отображаются в порядке, установленном по умолчанию', async () => {
+    renderWithProviders(<HomePage />);
 
     await waitFor(() => expect(screen.queryByText(/Loading.../i)).toBeNull());
 
@@ -37,8 +44,8 @@ describe('HomePage sorting', () => {
     expect(productNames).toEqual(data.products.map(p => p.title));
   });
 
-  it('sorts products by price ascending', async () => {
-    renderWithClient(<HomePage />);
+  it('Сортировать прайс по возрастанию', async () => {
+    renderWithProviders(<HomePage />);
     await waitFor(() => expect(screen.queryByText(/Loading.../i)).toBeNull());
 
     const select = screen.getByLabelText(/sort by price/i);
@@ -51,8 +58,8 @@ describe('HomePage sorting', () => {
     });
   });
 
-  it('sorts products by price descending', async () => {
-    renderWithClient(<HomePage />);
+  it('Сортировать прайс по убыванию', async () => {
+    renderWithProviders(<HomePage />);
     await waitFor(() => expect(screen.queryByText(/Loading.../i)).toBeNull());
 
     const select = screen.getByLabelText(/sort by price/i);

@@ -1,20 +1,12 @@
 import '@testing-library/jest-dom';
+import { cleanup } from '@testing-library/react';
 
-/* eslint-disable @typescript-eslint/no-namespace */
-declare global {
-  namespace jest {
-    interface Matchers<R> {
-      toBeInTheDocument(): R;
-      toHaveClass(className: string): R;
-      toHaveTextContent(text: string | RegExp): R;
-      toBeVisible(): R;
-      toBeDisabled(): R;
-      toBeEnabled(): R;
-      toHaveValue(value: string | string[] | number): R;
-      toBeChecked(): R;
-      toHaveFocus(): R;
-      toHaveAttribute(attr: string, value?: string): R;
-      toHaveStyle(css: string | Record<string, any>): R;
-    }
-  }
-}
+afterEach(() => {
+  cleanup();
+});
+
+(globalThis as any).import = { meta: { env: { VITE_WS_URL: 'ws://localhost:3000' } } };
+
+jest.mock('uuid', () => ({
+  v4: jest.fn(() => 'mocked-uuid-v4'),
+}));

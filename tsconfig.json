@@ -7,7 +7,11 @@
     "moduleResolution": "node",
     "strict": true,
     "skipLibCheck": true,
-    "types": ["jest", "@testing-library/jest-dom", "node"]
+    "jsx": "react-jsx",
+    "types": ["jest", "@testing-library/jest-dom", "node"],
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true
   },
-  "include": ["worker-mock-server/**/*.ts"]
+  "include": ["src", "worker-mock-server/**/*.ts", "src/types/**/*.d.ts"]
+
 }

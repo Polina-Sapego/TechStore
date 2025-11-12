@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './components/homePage';
-import '../styles/index.sass';
+import '../assets/styles/index.sass';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import CartDrawer from './components/cart/CartDrawer.tsx';
 import { CartDrawerProvider } from './components/cart/CartDrawerContext.tsx';
