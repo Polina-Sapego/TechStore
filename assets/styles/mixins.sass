@@ -1,6 +1,12 @@
 @mixin flex-center
   display: flex
   align-items: center
+  justify-content: center
+
+@mixin flex-between
+  display: flex
+  justify-content: space-between
+  align-items: center
 
 @mixin button-base
   padding: 8px 20px
@@ -11,7 +17,6 @@
 
 @mixin button-green-base($bg, $text-color: white)
   display: block
-  margin: 0 auto
   background-color: $bg
   color: $text-color
   padding: 10px 24px
@@ -28,3 +33,13 @@
 
   &:active
     transform: scale(0.97)
+
+@mixin card-shadow
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08)
+  border: 1px solid rgba(0, 0, 0, 0.05)
+
+@mixin transition-smooth
+  transition: all 0.3s ease
+
+@mixin transition-fast
+  transition: all 0.2s ease

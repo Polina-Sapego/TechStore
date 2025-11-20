@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
 import ProductCard, { type Product } from './productCard.tsx';
-import Logo from '../../../assets/images/logo.png';
 import AllProduct from '../../../assets/images/allProduct.png';
 import HeadPhones from '../../../assets/images/headPhone.png';
 import Phones from '../../../assets/images/phone.png';
 import Laptops from '../../../assets/images/laptop.png';
 import { fetchProducts } from '../../api/products.ts';
-import CartButton from '../cart/CartButton.tsx';
 import { useCartStore } from '../../store/cart/store.ts';
 
 const categories = [
@@ -49,18 +47,6 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-page">
-      <header className="main-header">
-        <div className="logo-tech-store">
-          <img src={Logo} alt="TechStore Logo" className="logo-tech-store-img" />
-          <h1 className="tech-store-title">TechStore</h1>
-        </div>
-        <div className="logo-register-buttons">
-          <button className="auth-button">Login</button>
-          <button className="auth-button">Register</button>
-          <CartButton />
-        </div>
-      </header>
-
       <div className="tech-store-category-buttons">
         {categories.map(({ id, label, img }) => (
           <button
