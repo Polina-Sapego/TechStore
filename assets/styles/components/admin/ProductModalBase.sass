@@ -1,0 +1,157 @@
+@use "../common" as common
+
+.modal-overlay
+  position: fixed
+  inset: 0
+  background: rgba(common.$color-black, 0.45)
+  z-index: 900
+
+.modal-container
+  position: fixed
+  left: 50%
+  top: 50%
+  transform: translate(-50%, -50%)
+  width: 90%
+  max-width: 450px
+  background: common.$color-white
+  z-index: 1000
+  box-shadow: 0 20px 60px rgba(common.$color-black, 0.18)
+  border-radius: 12px
+  padding: 1.25rem
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial
+
+.modal-header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  margin-bottom: 1rem
+  padding-bottom: 0.75rem
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+
+.modal-title
+  margin: 0
+  font-size: 1.25rem
+  font-weight: 600
+  color: common.$color-green-active
+
+.modal-close
+  background: transparent
+  border: none
+  font-size: 1.25rem
+  color: common.$color-gray
+  transition: color 0.2s ease
+  padding: 0
+  cursor: pointer
+
+  &:hover
+    color: common.$color-black
+
+.modal-form
+  display: flex
+  flex-direction: column
+  gap: 0.9rem
+
+  .form-group
+    display: flex
+    flex-direction: column
+    gap: 0.4rem
+
+    input[type="text"],
+    input[type="number"],
+    input[type="url"],
+    input[type="file"],
+    .form-group-select
+      padding: 0.6rem
+      border: 1px solid rgba(0, 0, 0, 0.2)
+      border-radius: 6px
+      font-size: 0.9rem
+      font-family: inherit
+      transition: border-color 0.2s ease
+
+      &:focus
+        outline: none
+        border-color: common.$color-green-active
+
+    input[type="file"]
+      cursor: pointer
+      background: common.$color-white
+
+      &::file-selector-button
+        padding: 0.5rem 1rem
+        margin-right: 1rem
+        border: none
+        border-radius: 6px
+        background: common.$color-green-active
+        color: common.$color-white
+        cursor: pointer
+        font-weight: 500
+        transition: background-color 0.2s ease
+
+        &:hover
+          background: common.$color-green-hover
+
+    .image-preview
+      margin-top: 0.5rem
+      max-width: 200px
+      border-radius: 6px
+      border: 1px solid rgba(common.$color-black, 0.1)
+
+      .image-preview-cart
+        width: 100%
+        height: auto
+        display: block
+        object-fit: contain
+
+    &.checkbox-group
+      flex-direction: row
+
+      .checkbox-text
+        display: flex
+        align-items: center
+        gap: 0.5rem
+        cursor: pointer
+        font-weight: normal
+
+      input[type="checkbox"]
+        width: 18px
+        height: 18px
+        cursor: pointer
+
+.form-actions
+  display: flex
+  gap: 0.75rem
+  margin-top: 0.25rem
+
+  .cancel-btn,
+  .submit-btn
+    flex: 1
+    padding: 0.6rem 1.25rem
+    border: none
+    border-radius: 6px
+    font-size: 0.9rem
+    font-weight: 600
+    transition: background-color 0.2s ease
+    cursor: pointer
+
+  .cancel-btn
+    background: common.$color-white
+    color: common.$color-black
+
+  .submit-btn
+    background: common.$color-green-active
+    color: common.$color-white
+
+    &:hover:not(:disabled)
+      background: common.$color-green-hover
+
+    &:disabled
+      opacity: 0.6
+      cursor: not-allowed
+
+@media (max-width: 600px)
+  .modal-container
+    width: 95%
+    padding: 1.5rem
+
+    .modal-title
+      font-size: 1.25rem

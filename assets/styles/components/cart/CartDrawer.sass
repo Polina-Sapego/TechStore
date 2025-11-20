@@ -1,0 +1,201 @@
+@use "../common" as common
+
+$color-red: #e74c3c
+
+.cart-box
+  position: fixed
+  inset: 0
+  background: rgba(common.$color-black, 0.45)
+  z-index: 900
+
+.cart-drawer
+  position: fixed
+  left: 50%
+  top: 50%
+  transform: translate(-50%, -50%)
+  width: 45%
+  max-width: 600px
+  height: auto
+  background: common.$color-white
+  z-index: 1000
+  display: flex
+  flex-direction: column
+  box-shadow: 0 20px 60px rgba(common.$color-black, 0.18)
+  border-radius: 12px
+  transition: opacity 220ms ease, transform 220ms ease
+  padding: 2% 1.6%
+  overflow: hidden
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial
+
+  .cart-drawer-header
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+    .cart-title
+      margin: 0
+      font-size: 1.5rem
+      letter-spacing: 0.02em
+      color: common.$color-green-active
+
+    .cart-close
+      background: transparent
+      border: none
+      font-size: 1.5rem
+      cursor: pointer
+      padding: 2%
+
+  .cart-drawer-content
+    margin-top: 4%
+
+    .cart-columns
+      display: flex
+      gap: 3px
+
+      .cart-col-items
+        flex: 1 1 60%
+        min-width: 0
+        display: flex
+        flex-direction: column
+
+        .items-heading
+          margin: 0 0 12px 0
+          font-size: 1rem
+          color: common.$color-gray
+
+        .items-list
+          overflow: auto
+          max-height: 250px
+          overflow-y: scroll
+          scrollbar-width: thin
+
+          .cart-item
+            display: flex
+            align-items: center
+            gap: 12px
+            padding: 3% 4%
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05)
+
+            .item-image-wrap
+              width: 70px
+              height: 60px
+              border-radius: 8px
+              overflow: hidden
+              background-color: common.$color-white
+              display: flex
+              align-items: center
+              justify-content: center
+
+              .item-image
+                max-height: 95%
+                max-width: 95%
+                object-fit: cover
+
+            .item-main
+              display: flex
+              flex-direction: column
+              justify-content: center
+              gap: 6px
+              flex: 1
+
+              .item-title
+                font-weight: 600
+                color: common.$color-black
+                font-size: 0.8rem
+
+              .item-qty-price
+                display: flex
+                justify-content: space-between
+                align-items: center
+                color: common.$color-gray
+                font-size: 0.7rem
+
+                .item-price
+                  font-weight: 700
+                  color: common.$color-black
+
+            .remove-btn
+              background: none
+              border: none
+              font-size: 1rem
+              color: common.$color-gray
+              cursor: pointer
+              transition: color 0.2s ease
+              align-self: center
+
+              &:hover
+                color: $color-red
+
+      .cart-col-summary
+        flex: 0 0 50%
+        display: flex
+        flex-direction: column
+        gap: 1%
+        align-items: stretch
+
+        .summary-image-wrap
+          width: 100%
+          height: 240px
+          display: flex
+          align-items: center
+          justify-content: center
+          background: rgba(common.$color-white, 1)
+          border-radius: 8px
+          overflow: hidden
+          border: 1px solid rgba(0, 0, 0, 0.04)
+
+          .summary-image
+            width: 100%
+            height: 100%
+            object-fit: cover
+
+        .cart-summary
+          padding: 6%
+          border-radius: 8px
+          border: 1px solid rgba(0, 0, 0, 0.04)
+
+          .summary-title
+            margin: 0 0 12px 0
+            font-size: 1rem
+
+          .summary-row
+            display: flex
+            justify-content: space-between
+            margin-bottom: 12px
+
+          .checkout-button
+            width: 100%
+            padding: 5% 14%
+            background: common.$color-green-active
+            color: common.$color-white
+            border: none
+            border-radius: 12px
+            cursor: pointer
+            font-weight: 600
+
+          .clear-button
+            width: 100%
+            padding: 3% 14%
+            margin-top: 2%
+            background: #e74c3c
+            color: common.$color-white
+            border: none
+            border-radius: 12px
+            cursor: pointer
+            font-weight: 600
+
+@media (max-width: 1100px)
+  .cart-drawer
+    width: 100%
+    max-width: 400px
+    max-height: 90%
+
+  .cart-columns
+    flex-direction: column
+
+  .cart-col-summary
+    flex: 0 0 auto
+    width: 100%
+
+  .summary-image-wrap
+    height: 200px
