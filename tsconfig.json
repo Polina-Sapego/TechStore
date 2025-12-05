@@ -12,6 +12,5 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true
   },
-  "include": ["src", "worker-mock-server/**/*.ts", "src/types/**/*.d.ts"]
-
+  "include": ["src"]
 }
