@@ -2,21 +2,24 @@ import fetchMock from 'jest-fetch-mock';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Admin from '../admin/index';
-import HomePage from '../homePage/index';
-import { useCartStore } from '../../store/cart/store';
-import { CartDrawerProvider } from '../cart/CartDrawerContext.tsx';
+import Admin from '../components/admin';
+import HomePage from '../components/homePage';
+import { useCartStore } from '../store/cart/store.ts';
+import { CartDrawerProvider } from '../components/cart/CartDrawerContext.tsx';
+import { MemoryRouter } from 'react-router-dom';
 
-jest.mock('../../store/cart/store', () => ({
+jest.mock('../store/cart/store.ts', () => ({
   useCartStore: jest.fn(),
 }));
 
 const renderWithClient = (ui: React.ReactElement) => {
   const queryClient = new QueryClient();
   return render(
+    <MemoryRouter>
     <QueryClientProvider client={queryClient}>
       <CartDrawerProvider>{ui}</CartDrawerProvider>
     </QueryClientProvider>,
+    </MemoryRouter>
   );
 };
 

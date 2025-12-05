@@ -10,19 +10,33 @@ export type CartItem = {
   image?: string;
 };
 
+type CartMessage =
+  | {
+  type: 'cart:update';
+  payload: CartItem[];
+  sessionId: string;
+}
+  | {
+  type: 'cart:sync';
+  payload: CartItem[];
+  sessionId: string;
+};
+
 interface ICartStore {
   product: CartItem[];
   addProduct: (product: CartItem) => void;
   removeProduct: (id: number) => void;
   clearCart: () => void;
+  setCart: (products: CartItem[]) => void;
   connectWebSocket: () => void;
   ws?: WebSocket | undefined;
   sessionId: string;
 }
 
-function safeSend(ws: WebSocket | undefined, data: any) {
+function safeSend(ws: WebSocket | undefined, data: CartMessage) {
   if (!ws) return;
   const msg = JSON.stringify(data);
+
   if (ws.readyState === WebSocket.OPEN) {
     ws.send(msg);
   } else {
@@ -35,9 +49,9 @@ function safeSend(ws: WebSocket | undefined, data: any) {
   }
 }
 
-const WS_URL =
-  (globalThis as any).VITE_WS_URL ||
-  'ws://localhost:3000';
+const WS_URL = (globalThis as unknown as {
+  VITE_WS_URL?: string
+}).VITE_WS_URL || 'ws://localhost:3000';
 
 export const useCartStore = create<ICartStore>()(
   persist(
@@ -82,6 +96,8 @@ export const useCartStore = create<ICartStore>()(
         safeSend(ws, { type: 'cart:update', payload: [], sessionId: get().sessionId });
         set({ product: [] });
       },
+
+      setCart: (products: CartItem[]) => set({ product: products }),
 
       connectWebSocket: () => {
         const existing = get().ws;
@@ -128,7 +144,7 @@ export const useCartStore = create<ICartStore>()(
       },
     }),
     {
-      name: 'cart-storage',
+      name: 'cart-storage-guest',
       partialize: (state) => ({ product: state.product }),
     }
   )

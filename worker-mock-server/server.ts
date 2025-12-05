@@ -5,15 +5,25 @@ import fs from 'fs';
 import path from 'path';
 import http from 'http';
 import { setupWebSocket } from './socket';
+import authRoutes from './routes/authRoutes';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
-app.use(cors());
+app.use(cookieParser());
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 app.use(express.json());
 
 const server = http.createServer(app);
 
 setupWebSocket(server);
+app.use('/', authRoutes);
 
 const dataPath = path.join(__dirname, 'data', 'products.json');
 

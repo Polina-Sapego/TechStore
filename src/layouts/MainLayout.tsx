@@ -1,11 +1,14 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '../components/homePage/header.tsx';
+import Index from '../components/header';
+import { useAuthInit } from '../hooks/useAuthInit.ts';
 
 function MainLayout() {
+  useAuthInit();
+
   return (
     <>
-      <Header />
+      <Index />
       <Outlet />
     </>
   );

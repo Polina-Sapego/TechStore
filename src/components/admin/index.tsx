@@ -80,7 +80,6 @@ const Admin: React.FC = () => {
     },
   });
 
-
   const deleteProductMutation = useMutation({
     mutationFn: (id: number) => deleteProduct(id),
     onSuccess: () => {
@@ -112,14 +111,7 @@ const Admin: React.FC = () => {
   };
 
   const handleDeleteProduct = async (productId: number) => {
-    if (!window.confirm('Are you sure you want to delete this product?')) return;
-
-    try {
       await deleteProductMutation.mutateAsync(productId);
-    } catch (error) {
-      console.error('Error deleting product:', error);
-      alert('Failed to delete product. Please try again.');
-    }
   };
 
   const handleOpenAddModal = () => {

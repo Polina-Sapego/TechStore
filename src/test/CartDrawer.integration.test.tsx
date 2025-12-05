@@ -2,11 +2,11 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import { useCartStore } from '../../store/cart/store.ts';
-import { CartDrawerProvider } from '../cart/CartDrawerContext.tsx';
-import CartDrawer from '../cart/CartDrawer';
-import CartButton from '../cart/CartButton';
-import { MockWebSocket } from '../../../__mocks__/websocket.ts';
+import { useCartStore } from '../store/cart/store.ts';
+import { CartDrawerProvider } from '../components/cart/CartDrawerContext.tsx';
+import CartDrawer from '../components/cart/CartDrawer.tsx';
+import CartButton from '../components/cart/CartButton.tsx';
+import { MockWebSocket } from '../../__mocks__/websocket.ts';
 
 (globalThis as any).WebSocket = MockWebSocket;
 

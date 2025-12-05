@@ -1,6 +1,7 @@
 import { WebSocketServer } from 'ws';
+import { Server } from 'http';
 
-export function setupWebSocket(server: import('http').Server) {
+export function setupWebSocket(server: Server) {
   const wss = new WebSocketServer({
     server,
   });

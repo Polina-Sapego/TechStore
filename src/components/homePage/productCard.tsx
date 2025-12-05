@@ -2,6 +2,8 @@ import React from 'react';
 import StarRating from './starRating.tsx';
 import { useCartStore } from '../../store/cart/store.ts';
 import { useCartDrawer } from '../cart/useCartDrawer.tsx';
+import { useAuthStore } from '../../store/user/store.ts';
+import { useNavigate } from 'react-router-dom';
 
 export type Product = {
   id: number;
@@ -20,16 +22,23 @@ type ProductCardProps = {
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const addProduct = useCartStore((s) => s.addProduct)
   const { open } = useCartDrawer()
+  const user = useAuthStore((s) => s.user);
+  const navigate = useNavigate();
 
   const handleAdd = () => {
-    addProduct({
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      qty: 1,
-      image: product.image,
-    });
-    open();
+    if (!user) {
+      navigate('/authorization');
+      return;
+    } else {
+      addProduct({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        qty: 1,
+        image: product.image,
+      });
+      open();
+    }
   };
 
   return (

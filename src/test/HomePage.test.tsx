@@ -2,10 +2,11 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { CartDrawerProvider } from '../cart/CartDrawerContext.tsx';
-import HomePage from '../homePage/index.tsx';
-import data from '../../../worker-mock-server/data/products.json';
+import { CartDrawerProvider } from '../components/cart/CartDrawerContext.tsx';
+import HomePage from '../components/homePage';
+import data from '../../worker-mock-server/data/products.json';
 import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 const renderWithProviders = (ui: React.ReactElement) => {
   const queryClient = new QueryClient({
@@ -13,11 +14,13 @@ const renderWithProviders = (ui: React.ReactElement) => {
   });
 
   return render(
+    <MemoryRouter>
     <QueryClientProvider client={queryClient}>
       <CartDrawerProvider>
         {ui}
       </CartDrawerProvider>
     </QueryClientProvider>,
+    </MemoryRouter>,
   );
 };
 

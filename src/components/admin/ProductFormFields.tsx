@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, type Control, type FieldErrors, type UseFormRegister } from 'react-hook-form';
+import { type Control, Controller, type FieldErrors, type UseFormRegister } from 'react-hook-form';
 import type { Product } from '../homePage/productCard';
 import { formProductFields, getFieldError } from './formFields';
 
