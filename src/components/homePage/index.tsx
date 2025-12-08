@@ -6,7 +6,7 @@ import HeadPhones from '../../../assets/images/headPhone.png';
 import Phones from '../../../assets/images/phone.png';
 import Laptops from '../../../assets/images/laptop.png';
 import { fetchProducts } from '../../api/products.ts';
-import { useCartStore } from '../../store/cart/store.ts';
+import { useCartStore } from '../../store/cart/useCartStore.ts';
 
 const categories = [
   { id: 'all', label: 'All', img: AllProduct },

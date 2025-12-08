@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import { useCartStore } from '../store/cart/store.ts';
+import { useCartStore } from '../store/cart/useCartStore.ts';
 import { CartDrawerProvider } from '../components/cart/CartDrawerContext.tsx';
 import CartDrawer from '../components/cart/CartDrawer.tsx';
 import CartButton from '../components/cart/CartButton.tsx';
@@ -29,7 +29,7 @@ beforeEach(() => {
     if (cur.ws && typeof cur.ws.close === 'function') {
       if (cur.ws) (cur.ws as any).close(false);
     }
-  } catch (e) { /* empty */
+  } catch { /* empty */
   }
 
   useCartStore.setState({ connectWebSocket: originalConnect });

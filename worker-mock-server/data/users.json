@@ -40,5 +40,11 @@
     "login": "userw3",
     "password": "user123",
     "role": "USER"
+   },
+  {
+    "id": 8,
+    "login": "userfdb",
+    "password": "user123",
+    "role": "USER"
   }
 ]

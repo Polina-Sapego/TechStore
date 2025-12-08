@@ -4,11 +4,11 @@ import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Admin from '../components/admin';
 import HomePage from '../components/homePage';
-import { useCartStore } from '../store/cart/store.ts';
+import { useCartStore } from '../store/cart/useCartStore.ts';
 import { CartDrawerProvider } from '../components/cart/CartDrawerContext.tsx';
 import { MemoryRouter } from 'react-router-dom';
 
-jest.mock('../store/cart/store.ts', () => ({
+jest.mock('../store/cart/useCartStore.ts', () => ({
   useCartStore: jest.fn(),
 }));
 

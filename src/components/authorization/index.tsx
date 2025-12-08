@@ -77,7 +77,6 @@ const Authorization = () => {
         sameSite: 'none',
         path: '/',
       });
-
       setUser(data.user);
       navigate(HOME_ROUTE);
 

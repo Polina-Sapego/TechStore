@@ -1,9 +1,9 @@
-import express, { Router } from 'express';
+import express, { Router, Response } from 'express';
 import bodyParser from 'body-parser';
-import { generateToken, verifyToken } from '../utils/jwt';
+import { generateToken } from '../utils/jwt';
 import path from 'path';
 import fs from 'fs';
-import { authCheck } from '../middleware/authMiddleware.ts';
+import { authCheck, type RequestWithUser } from '../middleware/authMiddleware.ts';
 
 const router = Router();
 
@@ -15,14 +15,6 @@ export interface UserDB {
   login: string;
   password: string;
   role: 'ADMIN' | 'USER';
-}
-
-interface JwtUserPayload {
-  id: number;
-  login: string;
-  role: 'ADMIN' | 'USER';
-  iat: number;
-  exp: number;
 }
 
 const usersFile = path.join(__dirname, '../data', 'users.json');
@@ -99,7 +91,7 @@ router.post('/register', (req, res) => {
   });
 });
 
-router.get('/me', authCheck, (req, res) => {
+router.get('/me', authCheck, (req: RequestWithUser, res: Response) => {
   const userData = req.user;
 
   if (!userData) {

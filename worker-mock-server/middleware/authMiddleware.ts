@@ -1,13 +1,20 @@
 import { NextFunction, Request, Response } from 'express';
-import { verifyToken } from '../utils/jwt';
+import { type JwtUserPayload, verifyToken } from '../utils/jwt';
 
-export const authCheck = (req: Request, res: Response, next: NextFunction) => {
+export interface RequestWithUser extends Request {
+  user?: JwtUserPayload;
+}
+
+export const authCheck = (req: RequestWithUser, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ message: "No token" });
+  }
 
-  if (!authHeader)
-    return res.status(401).json({ message: 'Authorization header missing' });
-
-  const token = authHeader.split(' ')[1];
+  const token = authHeader.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({ message: "Missing token" });
+  }
 
   try {
     const decoded = verifyToken(token);
@@ -17,9 +24,8 @@ export const authCheck = (req: Request, res: Response, next: NextFunction) => {
       login: decoded.login,
       role: decoded.role,
     };
-
     next();
   } catch {
-    return res.status(401).json({ message: 'Invalid token' });
+    return res.status(401).json({ message: "Invalid token" });
   }
 };

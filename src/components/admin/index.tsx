@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   type ColumnDef,
   flexRender,
@@ -75,15 +75,15 @@ const Admin: React.FC = () => {
       }
     },
 
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['products'] });
     },
   });
 
   const deleteProductMutation = useMutation({
     mutationFn: (id: number) => deleteProduct(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['products'] });
     },
   });
 
@@ -110,10 +110,6 @@ const Admin: React.FC = () => {
     }
   };
 
-  const handleDeleteProduct = async (productId: number) => {
-      await deleteProductMutation.mutateAsync(productId);
-  };
-
   const handleOpenAddModal = () => {
     setIsAddModalOpen(true);
   };
@@ -122,15 +118,19 @@ const Admin: React.FC = () => {
     setIsAddModalOpen(false);
   };
 
-  const handleEditProduct = (product: Product) => {
-    setEditingProduct(product);
-    setIsEditModalOpen(true);
-  };
-
   const handleCloseEditModal = () => {
     setIsEditModalOpen(false);
     setEditingProduct(null);
   };
+
+  const handleEditProduct = useCallback((product: Product) => {
+    setEditingProduct(product);
+    setIsEditModalOpen(true);
+  }, []);
+
+  const handleDeleteProduct = useCallback(async (productId: number) => {
+    await deleteProductMutation.mutateAsync(productId);
+  }, [deleteProductMutation]);
 
   const columns = useMemo<ColumnDef<Product>[]>(
     () => [
@@ -206,7 +206,7 @@ const Admin: React.FC = () => {
         ),
       },
     ],
-    [handleEditProduct],
+    [handleEditProduct, handleDeleteProduct],
   );
 
   const table = useReactTable({

@@ -9,7 +9,6 @@ export function useAuthInit() {
 
   useEffect(() => {
     const token = Cookies.get('token');
-
     if (!token) {
       setUser(null);
       return;
@@ -17,7 +16,9 @@ export function useAuthInit() {
 
     const checkAuth = async () => {
       const res = await fetch('http://localhost:3000/me', {
-        credentials: 'include',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
       });
 
       if (res.ok) {

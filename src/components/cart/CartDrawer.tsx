@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useCartDrawer } from './useCartDrawer';
 import Basket from '../../../assets/images/basket2.png';
-import { useCartStore } from '../../store/cart/store';
+import { useCartStore } from '../../store/cart/useCartStore.ts';
 
 export default function CartDrawer() {
   const { isOpen, close } = useCartDrawer();

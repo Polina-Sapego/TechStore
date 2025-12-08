@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { MockWebSocket } from '../../__mocks__/websocket.ts';
-import type { CartItem } from '../store/cart/store.ts';
-import { useCartStore } from '../store/cart/store.ts';
+import type { CartItem } from '../store/cart/types.ts';
+import { useCartStore } from '../store/cart/useCartStore.ts';
 
 (globalThis as any).WebSocket = MockWebSocket;
 

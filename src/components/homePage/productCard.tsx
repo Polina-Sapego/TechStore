@@ -1,6 +1,6 @@
 import React from 'react';
 import StarRating from './starRating.tsx';
-import { useCartStore } from '../../store/cart/store.ts';
+import { useCartStore } from '../../store/cart/useCartStore.ts';
 import { useCartDrawer } from '../cart/useCartDrawer.tsx';
 import { useAuthStore } from '../../store/user/store.ts';
 import { useNavigate } from 'react-router-dom';
