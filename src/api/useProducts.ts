@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
+import { apiFetch } from './apiFetch.ts';
+import type { Product } from '../components/homePage/productCard.tsx';
 
 export const useProducts = () =>
   useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:3000/products");
-      if (!res.ok) throw new Error("Failed to load products");
-      return res.json();
-    }
+      const res = await apiFetch<Product[]>("/products");
+      if (!res.ok) throw new Error(res.message);
+      return res.data!;
+    },
   });

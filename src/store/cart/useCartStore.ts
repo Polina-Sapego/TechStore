@@ -1,127 +1,147 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import type { StateStorage } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { toast } from 'sonner';
 
-import {
-  CartItem,
-  ICartStore,
-  createSessionId,
-  CartMessage,
-} from './types';
+import { CartItem, CartMessage, createSessionId, ICartStore } from './types';
+import { safeSend, WS_URL } from './ws';
+import { getCartStorageScope, getUserCartChannel } from './cartId.ts';
+import { useAuthStore } from '../user/store.ts';
 
-import { WS_URL, safeSend } from './ws';
+function scopedKey(base: string) {
+  return `${base}:${getCartStorageScope()}`;
+}
+
+const scopedStorage: StateStorage = {
+  getItem: (name) => localStorage.getItem(scopedKey(name)),
+  setItem: (name, value) => localStorage.setItem(scopedKey(name), value),
+  removeItem: (name) => localStorage.removeItem(scopedKey(name)),
+};
 
 export const useCartStore = create<ICartStore>()(
   persist(
-    (set, get) => ({
-      product: [],
-      sessionId: createSessionId(),
+    (set, get) => {
+      const sessionId = createSessionId();
 
-      addProduct: (newProduct) => {
-        set((state) => {
-          const existing = state.product.find((p) => p.id === newProduct.id);
-          let updated: CartItem[];
+      const initialState: ICartStore = {
+        product: [],
+        sessionId,
+        hasHydrated: false,
+        ws: undefined,
 
-          if (existing) {
-            updated = state.product.map((p) =>
-              p.id === newProduct.id
-                ? { ...p, qty: p.qty + (newProduct.qty ?? 1) }
-                : p
-            );
-          } else {
-            updated = [
-              ...state.product,
-              { ...newProduct, qty: newProduct.qty ?? 1 },
-            ];
+        setHasHydrated: (value) => set({ hasHydrated: value }),
+
+        addProduct: (newProduct) => {
+          const user = useAuthStore.getState().user;
+          if (!user) {
+            toast.error('Please log in to add products to cart');
+            return;
           }
+          set((state) => {
+            const existing = state.product.find((p) => p.id === newProduct.id);
+            let updated: CartItem[];
 
+            if (existing) {
+              updated = state.product.map((p) =>
+                p.id === newProduct.id
+                  ? { ...p, qty: p.qty + (newProduct.qty ?? 1) }
+                  : p,
+              );
+            } else {
+              updated = [...state.product, { ...newProduct, qty: newProduct.qty ?? 1 }];
+            }
+
+            safeSend(get().ws, {
+              type: 'cart:update',
+              payload: updated,
+              sessionId: get().sessionId,
+            });
+
+            return { product: updated };
+          });
+        },
+
+        removeProduct: (id) =>
+          set((state) => {
+            const user = useAuthStore.getState().user;
+            if (!user) {
+              toast.error('Please log in to manage cart');
+              return state;
+            }
+            const updated = state.product.filter((p) => p.id !== id);
+
+            safeSend(get().ws, {
+              type: 'cart:update',
+              payload: updated,
+              sessionId: get().sessionId,
+            });
+
+            return { product: updated };
+          }),
+
+        clearCart: () => {
+          const user = useAuthStore.getState().user;
+          if (!user) {
+            toast.error('Please log in to manage cart');
+            return;
+          }
           safeSend(get().ws, {
             type: 'cart:update',
-            payload: updated,
+            payload: [],
             sessionId: get().sessionId,
           });
 
-          return { product: updated };
-        });
-      },
+          set({ product: [] });
+        },
 
-      removeProduct: (id) =>
-        set((state) => {
-          const updated = state.product.filter((p) => p.id !== id);
+        setCart: (products: CartItem[]) => {
+          set({ product: products });
+        },
 
-          safeSend(get().ws, {
-            type: 'cart:update',
-            payload: updated,
-            sessionId: get().sessionId,
-          });
+        connectWebSocket: () => {
+          const channel = getUserCartChannel();
+          if (!channel) return;
 
-          return { product: updated };
-        }),
+          const { ws } = get();
+          if (ws) ws.close();
 
-      clearCart: () => {
-        safeSend(get().ws, {
-          type: 'cart:update',
-          payload: [],
-          sessionId: get().sessionId,
-        });
+          const newWs = new WebSocket(`${WS_URL}?cartId=${encodeURIComponent(channel)}`);
+          set({ ws: newWs });
 
-        set({ product: [] });
-      },
+          newWs.onopen = () => {
+            safeSend(get().ws, {
+              type: 'cart:update',
+              payload: get().product,
+              sessionId: get().sessionId,
+            });
+          };
 
-      setCart: (products: CartItem[]) => set({ product: products }),
+          newWs.onmessage = (event) => {
+            try {
+              const msg: CartMessage = JSON.parse(event.data);
+              if (msg.type !== 'cart:sync') return;
 
-      connectWebSocket: () => {
-        const existing = get().ws;
-
-        if (
-          existing &&
-          (existing.readyState === WebSocket.OPEN ||
-            existing.readyState === WebSocket.CONNECTING)
-        ) {
-          console.log('WebSocket already active — skipping reconnect');
-          return;
-        }
-
-        console.log('Creating new WebSocket at', WS_URL);
-
-        const ws = new WebSocket(WS_URL);
-
-        ws.onopen = () => {
-          console.log('WebSocket connected');
-        };
-
-        ws.onmessage = (event) => {
-          try {
-            const msg: CartMessage = JSON.parse(event.data);
-
-            if (msg.type === 'cart:sync') {
               if (msg.sessionId === get().sessionId) {
-                console.log('Ignoring own sync message');
                 return;
               }
 
-              console.log('Sync from other tab:', msg.payload);
               set({ product: msg.payload });
+            } catch (e) {
+              console.error('[Cart] WS message parse error', e);
             }
-          } catch (err) {
-            console.error('WS parse error:', err);
-          }
+          };
+        },
         };
 
-        ws.onerror = (err) => console.error('WebSocket error', err);
-
-        ws.onclose = (ev) => {
-          console.warn('WebSocket closed', ev);
-          set({ ws: undefined });
-
-          setTimeout(() => get().connectWebSocket(), 3000);
-        };
-
-        set({ ws });
-      },
-    }),
+      return initialState;
+    },
     {
-      name: 'cart-storage-guest',
-      partialize: (state) => ({ product: state.product }),
+      name: 'cart-storage',
+      storage: createJSONStorage(() => scopedStorage),
+      partialize: (state: ICartStore) => ({ product: state.product }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

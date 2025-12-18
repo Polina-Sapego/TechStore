@@ -29,6 +29,8 @@ export interface ICartStore {
   connectWebSocket: () => void;
   ws?: WebSocket | undefined;
   sessionId: string;
+  hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
 }
 
 export const createSessionId = () => uuidv4();

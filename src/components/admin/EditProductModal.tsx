@@ -67,7 +67,6 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ onClose, onSubmit, 
       onClose();
     } catch (error) {
       console.error('Error updating product:', error);
-      alert('Failed to update product. Please try again.');
     }
   };
 

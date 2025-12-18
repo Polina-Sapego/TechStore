@@ -1,7 +1,9 @@
 import '@testing-library/jest-dom';
-import { MockWebSocket } from '../../__mocks__/websocket.ts';
+import { MockWebSocket } from '@__mocks__/websocket.ts';
 import type { CartItem } from '../store/cart/types.ts';
 import { useCartStore } from '../store/cart/useCartStore.ts';
+import { waitFor } from '@testing-library/react';
+import { useAuthStore } from '../store/user/store.ts';
 
 (globalThis as any).WebSocket = MockWebSocket;
 
@@ -31,6 +33,7 @@ function resetStoreState() {
 beforeEach(() => {
   MockWebSocket.instances = [];
   localStorage.clear();
+  useAuthStore.setState({ user: { id: 1, login: 'test', role: 'USER' } as any });
   resetStoreState();
 });
 
@@ -58,13 +61,18 @@ describe('Cart integration', () => {
     });
   });
 
-  it('игнорирует cart:sync, если sessionId совпадает (нет петли)', () => {
+  it('игнорирует cart:sync, если sessionId совпадает (нет петли)', async () => {
     const store = useCartStore.getState();
     store.connectWebSocket();
+
     const ws = MockWebSocket.instances[0];
+
     const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {
     });
+
     const initialProductCount = store.product.length;
+
+    expect(store.sessionId).toBeDefined();
 
     ws.receive({
       type: 'cart:sync',
@@ -72,12 +80,16 @@ describe('Cart integration', () => {
       sessionId: store.sessionId,
     });
 
-    const ignoredCall = consoleSpy.mock.calls.some((call) =>
-      call[0]?.toString().includes('Ignoring self cart:sync'),
-    );
-    expect(ignoredCall).toBe(true);
+    await waitFor(() => {
+      const ignoredCall = consoleSpy.mock.calls.some(call =>
+        call[0]?.toString().includes('Ignoring own sync message'),
+      );
+      expect(ignoredCall).toBe(true);
+    });
+
     const updatedState = useCartStore.getState();
     expect(updatedState.product).toHaveLength(initialProductCount);
+
     consoleSpy.mockRestore();
   });
 

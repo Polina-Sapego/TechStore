@@ -7,10 +7,12 @@ import http from 'http';
 import { setupWebSocket } from './socket';
 import authRoutes from './routes/authRoutes';
 import cookieParser from 'cookie-parser';
+import cartRouter from './routes/cartRoutes.ts';
 
 const app = express();
 
 app.use(cookieParser());
+app.use('/api/cart', cartRouter);
 
 app.use(cors({
   origin: 'http://localhost:5173',

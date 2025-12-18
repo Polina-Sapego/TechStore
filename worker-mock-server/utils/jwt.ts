@@ -1,7 +1,6 @@
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import { UserDB } from '../routes/authRoutes.ts';
 
-
 export interface JwtUserPayload extends JwtPayload {
   id: number;
   login: string;

@@ -7,12 +7,13 @@ import {
   type SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { useProducts } from '../../api/useProducts';
+import { useProducts } from '@api/useProducts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Product } from '../homePage/productCard';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
-import { addProduct, deleteProduct, type ProductFormData, updateProduct } from '../../api/products';
+import { addProduct, deleteProduct, type ProductFormData, updateProduct } from '@api/products';
+import AdminSkeleton from '../skeletons/AdminSkeleton.tsx';
 
 const Admin: React.FC = () => {
   const { data: products, isLoading, isError } = useProducts();
@@ -97,7 +98,6 @@ const Admin: React.FC = () => {
       await addProductMutation.mutateAsync(productData);
     } catch (error) {
       console.error('Error adding product:', error);
-      alert('Failed to add product. Please try again.');
     }
   };
 
@@ -106,7 +106,6 @@ const Admin: React.FC = () => {
       await updateProductMutation.mutateAsync({ id: productId, data: productData });
     } catch (error) {
       console.error('Error updating product:', error);
-      alert('Failed to update product. Please try again.');
     }
   };
 
@@ -145,7 +144,7 @@ const Admin: React.FC = () => {
         enableSorting: false,
         cell: ({ row }) => (
           <div className="admin-product-images">
-            <img className="admin-product-image" src={row.original.image}
+            <img className="admin-product-image" src={row.original.image} loading="lazy"
                  alt={row.original.title} />
           </div>
         ),
@@ -220,7 +219,7 @@ const Admin: React.FC = () => {
     },
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <AdminSkeleton />;
   if (isError) return <p>Error loading products</p>;
 
   return (

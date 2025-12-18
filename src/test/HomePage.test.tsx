@@ -1,10 +1,10 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CartDrawerProvider } from '../components/cart/CartDrawerContext.tsx';
 import HomePage from '../components/homePage';
-import data from '../../worker-mock-server/data/products.json';
+import data from '@worker-mock-server/data/products.json';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -41,37 +41,35 @@ describe('HomePage sorting', () => {
   it('продукты отображаются в порядке, установленном по умолчанию', async () => {
     renderWithProviders(<HomePage />);
 
-    await waitFor(() => expect(screen.queryByText(/Loading.../i)).toBeNull());
+    const productNames = (await screen.findAllByTestId('product-title'))
+      .map(el => el.textContent);
 
-    const productNames = screen.getAllByTestId('product-title').map(el => el.textContent);
     expect(productNames).toEqual(data.products.map(p => p.title));
   });
 
   it('Сортировать прайс по возрастанию', async () => {
     renderWithProviders(<HomePage />);
-    await waitFor(() => expect(screen.queryByText(/Loading.../i)).toBeNull());
 
-    const select = screen.getByLabelText(/sort by price/i);
+    const select = await screen.findByLabelText(/sort by price/i);
     await userEvent.selectOptions(select, 'asc');
 
-    await waitFor(() => {
-      const prices = screen.getAllByTestId('product-price').map(el => Number(el.textContent));
-      const sorted = [...prices].sort((a, b) => a - b);
-      expect(prices).toEqual(sorted);
-    });
+    const prices = (await screen.findAllByTestId('product-price'))
+      .map(el => Number(el.textContent));
+
+    const sorted = [...prices].sort((a, b) => a - b);
+    expect(prices).toEqual(sorted);
   });
 
   it('Сортировать прайс по убыванию', async () => {
     renderWithProviders(<HomePage />);
-    await waitFor(() => expect(screen.queryByText(/Loading.../i)).toBeNull());
 
-    const select = screen.getByLabelText(/sort by price/i);
+    const select = await screen.findByLabelText(/sort by price/i);
     await userEvent.selectOptions(select, 'desc');
 
-    await waitFor(() => {
-      const prices = screen.getAllByTestId('product-price').map(el => Number(el.textContent));
-      const sorted = [...prices].sort((a, b) => b - a);
-      expect(prices).toEqual(sorted);
-    });
+    const prices = (await screen.findAllByTestId('product-price'))
+      .map(el => Number(el.textContent));
+
+    const sorted = [...prices].sort((a, b) => b - a);
+    expect(prices).toEqual(sorted);
   });
 });

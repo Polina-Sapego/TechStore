@@ -40,11 +40,17 @@
     "login": "userw3",
     "password": "user123",
     "role": "USER"
-   },
+  },
   {
     "id": 8,
     "login": "userfdb",
     "password": "user123",
+    "role": "USER"
+  },
+  {
+    "id": 9,
+    "login": "pppp",
+    "password": "$2b$10$giLGF4zPiFoTNdlkPPdHP.N1.nUT8cipQBlAx0CF0RTzMpOh2CZQi",
     "role": "USER"
   }
 ]

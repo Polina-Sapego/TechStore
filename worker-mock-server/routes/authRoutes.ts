@@ -1,14 +1,10 @@
-import express, { Router, Response } from 'express';
-import bodyParser from 'body-parser';
+import { Response, Router } from 'express';
 import { generateToken } from '../utils/jwt';
 import path from 'path';
 import fs from 'fs';
 import { authCheck, type RequestWithUser } from '../middleware/authMiddleware.ts';
 
 const router = Router();
-
-const app = express();
-app.use(bodyParser.json());
 
 export interface UserDB {
   id: number;
@@ -32,7 +28,7 @@ function saveUsers(users: UserDB[]) {
   fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
 }
 
-router.post('/authorization', (req, res) => {
+router.post('/authorization', async (req, res) => {
   const { login, password } = req.body;
   const users = loadUsers();
 
@@ -56,7 +52,7 @@ router.post('/authorization', (req, res) => {
   });
 });
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const { login, password } = req.body;
 
   if (!login || !password) {
@@ -91,15 +87,9 @@ router.post('/register', (req, res) => {
   });
 });
 
-router.get('/me', authCheck, (req: RequestWithUser, res: Response) => {
-  const userData = req.user;
-
-  if (!userData) {
-    return res.status(401).json({ message: 'No token' });
-  }
-
+router.get('/api/me', authCheck, (req: RequestWithUser, res: Response) => {
   const users = loadUsers();
-  const user = users.find(u => u.id === userData.id);
+  const user = users.find(u => u.id === req.user!.id);
 
   if (!user) {
     return res.status(401).json({ message: 'Invalid token' });

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { useAuthStore } from '../../store/user/store.ts';
+import { useAuthStore } from '@store/user/store.ts';
+import { apiFetch } from '@api/apiFetch.ts';
 
 export const LOGIN_ROUTE = '/authorization';
 export const SIGNUP_ROUTE = '/signup';
@@ -20,73 +21,42 @@ const Authorization = () => {
   const handleLogin = async () => {
     setError('');
 
-    try {
-      const res = await fetch('http://localhost:3000/authorization', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ login, password }),
-        credentials: 'include',
-      });
+    const res = await apiFetch('/authorization', {
+      method: 'POST',
+      body: JSON.stringify({ login, password }),
+      showToast: true,
+    });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || 'Login failed');
-        return;
-      }
-
-      Cookies.set('token', data.token, {
-        expires: 3,
-        secure: true,
-        sameSite: 'none',
-        path: '/',
-      });
-      setUser(data.user);
-      navigate(data.user.role === 'ADMIN' ? ADMIN_ROUTE : HOME_ROUTE);
-
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Unknown error');
-      }
+    if (!res.ok) {
+      setError(res.message ?? 'Unknown error');
+      return;
     }
+
+    const data = res.data!;
+    Cookies.set('token', data.token);
+    setUser(data.user);
+
+    navigate(data.user.role === 'ADMIN' ? ADMIN_ROUTE : HOME_ROUTE);
   };
 
   const handleRegister = async () => {
     setError('');
 
-    try {
-      const res = await fetch('http://localhost:3000/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ login, password }),
-        credentials: 'include',
-      });
+    const res = await apiFetch('/register', {
+      method: 'POST',
+      body: JSON.stringify({ login, password }),
+      showToast: true,
+    });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "Login failed");
-        return;
-      }
-
-      Cookies.set('token', data.token, {
-        expires: 3,
-        secure: true,
-        sameSite: 'none',
-        path: '/',
-      });
-      setUser(data.user);
-      navigate(HOME_ROUTE);
-
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Unknown error');
-      }
+    if (!res.ok) {
+      setError(res.message ?? 'Unknown error');
+      return;
     }
+
+    const data = res.data!;
+    Cookies.set('token', data.token);
+    setUser(data.user);
+    navigate(HOME_ROUTE);
   };
 
   const handleSubmit = async () => {

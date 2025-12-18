@@ -6,7 +6,8 @@ import { useCartStore } from '../store/cart/useCartStore.ts';
 import { CartDrawerProvider } from '../components/cart/CartDrawerContext.tsx';
 import CartDrawer from '../components/cart/CartDrawer.tsx';
 import CartButton from '../components/cart/CartButton.tsx';
-import { MockWebSocket } from '../../__mocks__/websocket.ts';
+import { MockWebSocket } from '@__mocks__/websocket.ts';
+import { useAuthStore } from '../store/user/store.ts';
 
 (globalThis as any).WebSocket = MockWebSocket;
 
@@ -17,6 +18,7 @@ function renderWithProviders(ui: React.ReactNode) {
 beforeEach(() => {
   MockWebSocket.instances = [];
   localStorage.clear();
+  useAuthStore.setState({ user: { id: 1, login: 'test', role: 'USER' } as any });
 
   const cur = useCartStore.getState();
   const originalConnect = cur.connectWebSocket;
@@ -39,10 +41,6 @@ beforeEach(() => {
     product: [],
   });
 
-});
-
-beforeEach(() => {
-  MockWebSocket.instances = [];
 });
 
 describe("CartDrawer integration", () => {

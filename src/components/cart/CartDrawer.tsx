@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useCartDrawer } from './useCartDrawer';
-import Basket from '../../../assets/images/basket2.png';
-import { useCartStore } from '../../store/cart/useCartStore.ts';
+import Basket from '@images/basket2.png';
+import { useCartStore } from '@store/cart/useCartStore.ts';
 
 export default function CartDrawer() {
   const { isOpen, close } = useCartDrawer();
@@ -64,7 +64,8 @@ export default function CartDrawer() {
                   product.map(item => (
                     <div className="cart-item" key={item.id} data-testid="cart-item">
                       <div className="item-image-wrap">
-                        <img src={item.image} alt={item.title} className="item-image" />
+                        <img loading="lazy" src={item.image} alt={item.title}
+                             className="item-image" />
                       </div>
                       <div className="item-main">
                         <div className="item-title" data-testid="product-title">{item.title}</div>

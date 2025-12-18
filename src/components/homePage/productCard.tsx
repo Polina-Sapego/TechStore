@@ -1,8 +1,8 @@
 import React from 'react';
 import StarRating from './starRating.tsx';
-import { useCartStore } from '../../store/cart/useCartStore.ts';
+import { useCartStore } from '@store/cart/useCartStore.ts';
 import { useCartDrawer } from '../cart/useCartDrawer.tsx';
-import { useAuthStore } from '../../store/user/store.ts';
+import { useAuthStore } from '@store/user/store.ts';
 import { useNavigate } from 'react-router-dom';
 
 export type Product = {
@@ -44,7 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   return (
     <div className="product-card">
       <div className="card-image-box">
-        <img src={product.image} alt={product.title} className="card-image"/>
+        <img src={product.image} alt={product.title} loading="lazy" className="card-image" />
       </div>
       <div className="card-content">
         <h3 className="card-name" data-testid="product-title">{product.title}</h3>

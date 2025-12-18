@@ -7,6 +7,7 @@ export interface RequestWithUser extends Request {
 
 export const authCheck = (req: RequestWithUser, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
+
   if (!authHeader) {
     return res.status(401).json({ message: "No token" });
   }

@@ -15,12 +15,10 @@ export const useImageUpload = ({ setValue, existingImage }: UseImageUploadProps)
       const file = e.target.files?.[0];
       if (file) {
         if (!file.type.startsWith('image/')) {
-          alert('Please select an image file');
           return;
         }
 
         if (file.size > 5 * 1024 * 1024) {
-          alert('Image size should be less than 5MB');
           return;
         }
 
@@ -30,7 +28,6 @@ export const useImageUpload = ({ setValue, existingImage }: UseImageUploadProps)
           setValue('image', base64String, { shouldValidate: true });
         };
         reader.onerror = () => {
-          alert('Error reading file');
         };
         reader.readAsDataURL(file);
       } else if (existingImage) {

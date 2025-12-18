@@ -62,11 +62,7 @@ test('успешный логин: USER → redirect на HOME', async () => {
     });
   });
 
-  expect(Cookies.set).toHaveBeenCalledWith(
-    'token',
-    'abc123',
-    expect.any(Object),
-  );
+  expect(Cookies.set).toHaveBeenCalledWith('token', 'abc123');
 
   expect(mockNavigate).toHaveBeenCalledWith(HOME_ROUTE);
 });
