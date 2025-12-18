@@ -16,11 +16,35 @@
 
 ## Установка и запуск
 1. Склонируйте репозиторий:  
-```bash
-git clone <url>
+    ```bash
+    git clone <url>
+    ```
 
 2. Установите зависимости:
-  npm install
+    ```bash
+      npm install
+    ```
 
-3.Запустите фронтенд:
-  npm run dev
+3. Запустите фронтенд:
+
+   ```bash
+    npm run dev
+    ```
+4. Запустить тесты
+
+    ```bash
+    npm run test
+    ```
+
+5. Запустить билд
+
+    ```bash
+    npm run build
+    ```
+
+6. Запустить бэкенд
+
+    ```bash
+    npx ts-node worker-mock-server/server.ts
+    ```
+   
